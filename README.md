@@ -2,7 +2,8 @@
 
 # SciFigure Studio
 
-**Free, open-source scientific vector drawing — offline, editable, and extensible.**  
+**Free, open-source scientific vector drawing — offline, editable, and extensible.**
+
 **免费开源科研矢量绘图工具 · 刚刚BME**
 
 [中文说明](#中文说明) · [English](#english) · [Download / 下载](https://github.com/bailong2012-rgb/SciFigure-Studio/releases) · [Report an issue](https://github.com/bailong2012-rgb/SciFigure-Studio/issues)
