@@ -1,0 +1,5 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>素材库离线测试</title>
+<main id="asset-panel" style="width:360px"></main><dialog id="asset-dialog"></dialog>
+<script src="../src/svg.js"></script><script src="../src/storage.js"></script><script src="../src/assets.js"></script>
+<script>window.boot = SF.store.ready().then(() => SF.Assets.init({store:SF.store,onInsert:asset=>{window.inserted=asset;},onStatus:message=>{window.statusMessage=message;}}));</script>
+</html>

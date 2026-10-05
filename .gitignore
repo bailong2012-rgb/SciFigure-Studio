@@ -1,0 +1,12 @@
+/work/
+/outputs/
+__pycache__/
+*.pyc
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db
+/docs/design-v0.1.md
+/docs/plan-v0.1.md
+/docs/progress.md

@@ -1,0 +1,26 @@
+name: Test and package
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m playwright install msedge
+      - run: python tests/run_all.py
+      - run: python build.py
+      - run: python tests/acceptance.py --app outputs/SciFigure-Studio-0.1.0/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SciFigure-Studio-0.1.0
+          path: |
+            outputs/*.zip
+            outputs/SHA256SUMS.txt

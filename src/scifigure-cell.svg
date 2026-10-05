@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>SciFigure Studio · Cell and vector</title>
+  <defs>
+    <linearGradient id="membrane" x1="12" y1="9" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c2f4e9"/><stop offset=".5" stop-color="#77d1ce"/><stop offset="1" stop-color="#4899b9"/>
+    </linearGradient>
+    <linearGradient id="cytoplasm" x1="16" y1="12" x2="50" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a1e0d5" stop-opacity=".18"/><stop offset="1" stop-color="#4497b8" stop-opacity=".05"/>
+    </linearGradient>
+    <radialGradient id="nucleus" cx=".3" cy=".25" r=".8">
+      <stop stop-color="#ffb0a3"/><stop offset=".55" stop-color="#f46f76"/><stop offset="1" stop-color="#dc5068"/>
+    </radialGradient>
+  </defs>
+  <path d="M43 12C32 5 18 10 11 22C2 37 11 52 28 55C44 59 57 47 55 32C54 26 53 22 50 18L43 12Z" fill="url(#cytoplasm)"/>
+  <path d="M43 12C32 5 18 10 11 22C2 37 11 52 28 55C44 59 57 47 55 32C54 26 53 22 50 18" stroke="url(#membrane)" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M20 17C12 23 10 33 15 41M33 49C43 49 49 43 49 35" stroke="#a6e5dc" stroke-width="1.6" stroke-linecap="round" opacity=".52"/>
+  <circle cx="31" cy="32" r="8.9" fill="#ee8589" fill-opacity=".09"/>
+  <circle cx="31" cy="32" r="5.3" fill="url(#nucleus)"/>
+  <circle cx="29.5" cy="30.5" r="1.1" fill="#ffe7dd" opacity=".7"/>
+  <path d="M43.5 11.5L49 17" stroke="#a1dfdc" stroke-width="1.3" stroke-dasharray="2 2"/>
+  <rect x="42" y="7" width="6" height="6" rx="1" transform="rotate(25 45 10)" fill="#d1f4ea"/>
+</svg>

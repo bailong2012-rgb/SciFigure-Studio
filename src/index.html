@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SciFigure Studio · 刚刚BME 科研工具</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="scifigure-cell.svg" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <img
+          class="brand-mark"
+          src="scifigure-cell.svg"
+          alt="SciFigure 细胞图标"
+          width="44"
+          height="44"
+        />
+        <div>
+          <strong>SciFigure <span>Studio</span></strong
+          ><small>科研矢量绘图 · 0.1 便携版</small>
+        </div>
+      </div>
+      <div class="parent-brand" aria-label="刚刚BME" title="刚刚BME · 科研工具">
+        <img src="ganggang-bme-logo.png" alt="" width="36" height="36" />
+        <div class="parent-wordmark" aria-hidden="true">
+          <span class="parent-cn">刚刚</span><span class="parent-b">B</span
+          ><span class="parent-m">M</span><span class="parent-e">E</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="new-project">＋ 新建</button
+        ><button id="projects-btn">项目库</button
+        ><button id="save-project">备份工程</button
+        ><button id="load-project">打开工程</button
+        ><button id="help-btn" title="快捷键和使用说明">帮助</button>
+      </div>
+    </header>
+    <nav class="toolbar" aria-label="编辑工具">
+      <div class="tool-group">
+        <button id="undo" title="撤销 Ctrl+Z">↶</button
+        ><button id="redo" title="重做 Ctrl+Shift+Z">↷</button>
+      </div>
+      <div class="tool-group">
+        <button id="add-text">T 文字</button
+        ><button id="add-rect">□ 矩形</button
+        ><button id="add-ellipse">○ 圆形</button
+        ><button id="add-arrow">→ 箭头</button>
+      </div>
+      <div class="tool-group">
+        <button id="duplicate" title="Ctrl+D">复制</button
+        ><button id="delete">删除</button><button id="group">组合</button
+        ><button id="ungroup">拆组</button>
+      </div>
+      <div class="tool-group alignment">
+        <select id="align-action" aria-label="对齐和分布">
+          <option value="">对齐 / 分布</option>
+          <option value="left">左对齐</option>
+          <option value="hcenter">水平居中</option>
+          <option value="right">右对齐</option>
+          <option value="top">顶部对齐</option>
+          <option value="vcenter">垂直居中</option>
+          <option value="bottom">底部对齐</option>
+          <option value="distribute-h">水平等距</option>
+          <option value="distribute-v">垂直等距</option>
+        </select>
+      </div>
+      <div class="tool-group">
+        <label class="toggle"
+          ><input id="snap" type="checkbox" checked />吸附</label
+        ><label class="toggle"
+          ><input id="grid-toggle" type="checkbox" />网格</label
+        >
+      </div>
+      <div class="tool-group export-group">
+        <button id="export-svg" class="primary">导出 SVG</button
+        ><button id="export-png">PNG</button
+        ><select id="png-scale" aria-label="PNG分辨率">
+          <option value="3">3×</option>
+          <option value="2">2×</option>
+          <option value="1">1×</option>
+        </select>
+      </div>
+    </nav>
+    <main class="workspace">
+      <aside class="left-sidebar">
+        <div class="sidebar-heading">
+          <strong>素材库</strong><span class="badge">离线</span>
+        </div>
+        <div id="asset-panel"></div>
+      </aside>
+      <section class="canvas-shell">
+        <div class="canvas-info">
+          <div class="canvas-context">
+            <div class="project-title">
+              <input
+                id="project-name"
+                aria-label="项目名称"
+                value="正在打开项目…"
+              />
+              <span id="save-status">本地离线</span>
+            </div>
+            <span id="canvas-title">画布</span>
+          </div>
+          <div>
+            <button id="zoom-out" title="缩小">−</button
+            ><select id="zoom" aria-label="画布缩放">
+              <option value="fit">适应画布</option>
+              <option value=".25">25%</option>
+              <option value=".5">50%</option>
+              <option value=".75">75%</option>
+              <option value="1">100%</option>
+              <option value="1.5">150%</option>
+              <option value="2">200%</option>
+              <option value="3">300%</option></select
+            ><button id="zoom-in" title="放大">＋</button>
+          </div>
+        </div>
+        <div id="workarea" class="workarea">
+          <div id="paper" class="paper">
+            <svg
+              id="stage"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1568 784"
+              width="1568"
+              height="784"
+              font-family="Microsoft YaHei, Noto Sans SC, Arial, sans-serif"
+            >
+              <defs id="defs"></defs>
+              <defs id="ui-defs">
+                <pattern
+                  id="ui-grid-pattern"
+                  width="10"
+                  height="10"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path
+                    d="M10 0H0V10"
+                    fill="none"
+                    stroke="#94b4c4"
+                    stroke-width=".5"
+                    opacity=".5"
+                  />
+                </pattern>
+              </defs>
+              <rect id="background" width="1568" height="784" fill="#ffffff" />
+              <rect
+                id="grid"
+                width="1568"
+                height="784"
+                fill="url(#ui-grid-pattern)"
+                display="none"
+              />
+              <g id="art"></g>
+              <g id="guides"></g>
+              <g id="selection"></g>
+            </svg>
+          </div>
+        </div>
+        <div class="canvas-bottom">
+          <span id="selection-info">选择一个元素开始编辑</span
+          ><span>空格拖动画布 · Shift 多选 · 顶部手柄旋转</span>
+        </div>
+      </section>
+      <aside class="right-sidebar">
+        <div class="sidebar-heading">
+          <strong>属性</strong
+          ><span id="selection-count" class="badge">画布</span>
+        </div>
+        <div class="property-scroll">
+          <div id="canvas-props">
+            <div class="section-label">画布设置</div>
+            <div class="field-grid">
+              <label
+                >宽度<input
+                  id="canvas-width"
+                  type="number"
+                  min="64"
+                  max="12000"
+                  value="1568" /></label
+              ><label
+                >高度<input
+                  id="canvas-height"
+                  type="number"
+                  min="64"
+                  max="12000"
+                  value="784"
+              /></label>
+            </div>
+            <label class="field"
+              >背景颜色<input
+                id="canvas-background"
+                type="color"
+                value="#ffffff" /></label
+            ><label class="field"
+              >网格间距<input
+                id="grid-size"
+                type="number"
+                min="2"
+                max="200"
+                value="10"
+            /></label>
+            <div class="hint">
+              从左侧添加素材，或拖入 SVG 文件。双击文字可直接编辑。
+            </div>
+          </div>
+          <div id="element-props" hidden>
+            <div id="prop-name" class="property-name"></div>
+            <div id="text-props">
+              <label class="field"
+                >文字内容<textarea id="prop-text" rows="3"></textarea>
+              </label>
+              <div class="field-grid">
+                <label
+                  >字号<input
+                    id="prop-fontsize"
+                    type="number"
+                    min="1"
+                    max="500" /></label
+                ><label
+                  >字重<select id="prop-weight">
+                    <option value="400">常规</option>
+                    <option value="500">中等</option>
+                    <option value="600">半粗</option>
+                    <option value="700">加粗</option>
+                  </select></label
+                >
+              </div>
+              <label class="field"
+                >对齐<select id="prop-anchor">
+                  <option value="start">左对齐</option>
+                  <option value="middle">居中</option>
+                  <option value="end">右对齐</option>
+                </select></label
+              >
+            </div>
+            <div class="section-label">位置与尺寸</div>
+            <div class="field-grid">
+              <label>X<input id="prop-x" type="number" step="1" /></label
+              ><label>Y<input id="prop-y" type="number" step="1" /></label
+              ><label
+                >宽度<input
+                  id="prop-width"
+                  type="number"
+                  min=".1"
+                  step="1" /></label
+              ><label
+                >高度<input id="prop-height" type="number" min=".1" step="1"
+              /></label>
+            </div>
+            <label class="toggle keep-ratio"
+              ><input id="aspect" type="checkbox" checked />锁定宽高比</label
+            >
+            <div class="field-grid">
+              <label
+                >旋转角度 °<input
+                  id="prop-rotation"
+                  type="number"
+                  step="1" /></label
+              ><label
+                >不透明度 %<input
+                  id="prop-opacity"
+                  type="number"
+                  min="0"
+                  max="100"
+              /></label>
+            </div>
+            <div class="section-label">外观</div>
+            <div class="field-grid">
+              <label>填充 / 文字<input id="prop-fill" type="color" /></label
+              ><label>描边<input id="prop-stroke" type="color" /></label
+              ><label
+                >线宽<input
+                  id="prop-strokewidth"
+                  type="number"
+                  min="0"
+                  step=".2" /></label
+              ><label
+                >线型<select id="prop-dash">
+                  <option value="">实线</option>
+                  <option value="4 4">虚线</option>
+                  <option value="2 5">点线</option>
+                </select></label
+              >
+            </div>
+            <div class="button-grid">
+              <button id="forward">上移一层</button
+              ><button id="backward">下移一层</button
+              ><button id="front">置顶</button><button id="back">置底</button
+              ><button id="lock">锁定 / 解锁</button
+              ><button id="hide">隐藏</button>
+            </div>
+          </div>
+          <details class="layers-section" open>
+            <summary>图层 <span id="layer-count"></span></summary>
+            <input
+              id="layer-search"
+              placeholder="搜索图层…"
+              aria-label="搜索图层"
+            />
+            <div id="layers"></div>
+          </details>
+        </div>
+      </aside>
+    </main>
+    <footer class="statusbar">
+      <span
+        ><i class="offline-dot"></i>本地离线
+        <span id="status-message">就绪</span></span
+      ><span id="document-info">SciFigure Studio 0.1.0</span>
+    </footer>
+    <dialog id="asset-dialog"></dialog>
+    <dialog id="project-dialog"></dialog>
+    <dialog id="help-dialog">
+      <div class="dialog-heading">
+        <h2>SciFigure Studio 0.1</h2>
+        <button data-close="help-dialog">关闭</button>
+      </div>
+      <p>下载解压后双击 index.html，即可使用。无需账号、网络或安装运行环境。</p>
+      <div class="help-grid">
+        <div>
+          <h3>画图</h3>
+          <p>
+            点击或框选元素，Shift
+            多选。拖动四角缩放；拖动选框上方的圆形手柄旋转，Shift 按 15°
+            吸附。双击文字修改。右侧可精确设置位置、尺寸、颜色。
+          </p>
+          <h3>快捷键</h3>
+          <p>
+            Ctrl+Z 撤销 · Ctrl+Shift+Z 重做<br />Ctrl+D 复制 · Ctrl+C/V
+            内部复制粘贴<br />Ctrl+A 全选 · Delete 删除<br />方向键微调，Shift
+            移动 10 单位<br />空格拖动平移 · Ctrl+滚轮缩放
+          </p>
+        </div>
+        <div>
+          <h3>项目与素材</h3>
+          <p>
+            项目库支持新建、重命名、复制和删除。项目自动保存在当前浏览器，换电脑或移动便携文件夹前，请备份工程和素材包。
+          </p>
+          <p>
+            导入 SVG 才能编辑矢量内容；PNG 不是可拆分的矢量图。SVG
+            文件中的脚本和外部资源不受支持。素材库按页读取，适合逐步扩充。
+          </p>
+          <h3>开源与扩展</h3>
+          <p>
+            软件代码 MIT；随附原创示例素材
+            CC0。导入素材保留自己的许可。详细格式和扩展入口见 docs 文件夹。
+          </p>
+        </div>
+      </div>
+      <p class="muted">
+        0.1 预览版 · 已针对 Windows Edge / Chrome
+        进行离线验证。建议定期导出工程备份。
+      </p>
+    </dialog>
+    <dialog id="text-dialog">
+      <form method="dialog">
+        <h2>编辑文字</h2>
+        <textarea id="text-edit-value" rows="5"></textarea>
+        <div class="dialog-actions">
+          <button value="cancel">取消</button
+          ><button id="text-edit-apply" type="button" class="primary">
+            应用
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <input id="project-file" type="file" accept=".json,.scifigure" hidden />
+    <div id="toast" role="status"></div>
+    <script src="core.js"></script>
+    <script src="svg.js"></script>
+    <script src="storage.js"></script>
+    <script src="builtins.js"></script>
+    <script src="editor.js"></script>
+    <script src="projects.js"></script>
+    <script src="assets.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

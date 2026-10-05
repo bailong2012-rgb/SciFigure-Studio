@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><title>Project tests</title>
+<button id="projects-btn">项目</button><button id="new-project">新建</button>
+<input id="project-name"><button id="save-project">导出</button><button id="load-project">导入</button>
+<input id="project-file" type="file"><dialog id="project-dialog"></dialog>
+<script src="../src/storage.js"></script><script src="../src/projects.js"></script>
+<script>
+window.makeDoc=(id,name)=>({format:'scifigure-project',version:1,id,name,createdAt:'2026-01-01',updatedAt:'2026-01-01',canvas:{width:800,height:600,background:'#fff'},scene:{defs:'',body:'<g data-item="1"></g>'}});
+window.statuses=[];
+window.editor={doc:makeDoc('initial','初始'),listeners:[],getDocument(){return structuredClone(this.doc)},loadDocument(doc){if(doc.version!==1||doc.format!=='scifigure-project')throw Error('不支持的项目');this.doc=structuredClone(doc);this.listeners.forEach(fn=>fn());},newDocument({name,width,height}){this.doc=makeDoc('new-'+Date.now(),name);this.doc.canvas={width,height,background:'#fff'};this.doc.scene.body='';this.listeners.forEach(fn=>fn());},onChange(fn){this.listeners.push(fn)},setName(name){this.doc.name=name;this.listeners.forEach(fn=>fn())},edit(body){this.doc.scene.body=body;this.listeners.forEach(fn=>fn())}};
+window.start=async()=>{await SF.store.ready();window.projects=await SF.Projects.init({editor,store:SF.store,onStatus:(text,type)=>statuses.push({text,type}),demoDocument:makeDoc('demo','示例项目')});};
+</script>
